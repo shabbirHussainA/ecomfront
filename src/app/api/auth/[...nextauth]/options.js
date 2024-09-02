@@ -1,5 +1,6 @@
+//this is to sigin the user its working
 import { NextAuthOptions } from "next-auth";
-import dbConnect from "@/lib/dbConnect";
+import dbConnect from "../../../../lib/dbConnect";
 import UserModal from "@/models/UserModel";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";

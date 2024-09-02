@@ -2,22 +2,16 @@
 import {zodResolver} from '@hookform/resolvers/zod'
 // import {zodResolver} from '@hookform/resolvers'
 import { useForm} from "react-hook-form"
-import * as z from "zod"
 import Link from 'next/link'
-import axios,{AxiosError} from 'axios'
 import { useToast } from "@/components/ui/use-toast"
-import { useEffect, useState } from 'react'
-import {useDebounceCallback} from 'usehooks-ts'
 import { useRouter } from 'next/navigation'
-import { signUpValidation } from '@/schemas/signupSchema'
-import ApiResponse from '@/types/ApiResponse'
+// import ApiResponse from '@/types/ApiResponse'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { signInValidation } from '@/schemas/signInSchema'
 import { signIn } from 'next-auth/react'
-import { error } from 'console'
+// import { error } from 'console'
 export default function SignInForm() {
   const router = useRouter();
 
@@ -52,7 +46,7 @@ export default function SignInForm() {
         });
       }
     }
-
+    console.log(result)
     if (result?.url) {
       router.replace('/dashboard');
     }

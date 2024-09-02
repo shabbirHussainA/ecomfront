@@ -1,7 +1,6 @@
 'use client'
 import {zodResolver} from '@hookform/resolvers/zod'
 import { useForm} from "react-hook-form"
-import * as z from "zod"
 import Link from 'next/link'
 import axios,{AxiosError} from 'axios'
 import { useToast } from "@/components/ui/use-toast"
@@ -9,7 +8,7 @@ import { useEffect, useState } from 'react'
 import {useDebounceCallback} from 'usehooks-ts'
 import { useRouter } from 'next/navigation'
 import { signUpValidation } from '@/schemas/signupSchema'
-import ApiResponse from '@/types/ApiResponse'
+// import ApiResponse from '@/types/ApiResponse'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Loader2 } from 'lucide-react'
@@ -45,7 +44,7 @@ function page() {
             setusernameMsg('')
             try {
               // fetching the response 
-             const response =await axios.get<ApiResponse>(`/api/check-username-unique?username=${username}`)
+             const response =await axios.get(`/api/check-username-unique?username=${username}`)
             //  set the msg 
              setusernameMsg(response.data.message)
       
@@ -63,9 +62,12 @@ function page() {
 
   //creating onSubmit func to signup user
   const onSubmit = async (data) => {
+    data.role = "customer"
+    console.log(data)
     setisSubmitting(true);
+    
       try {
-       const response =await axios.post<ApiResponse>('/api/sign-up',data)
+       const response =await axios.post('/api/sign-up',data)
        if(response.data.success){
          toast({
            title: 'Sign up successful',

@@ -1,4 +1,4 @@
-// import UserModal from "@/models/User.model.js";
+// thsi to signup working
 import UserModel from "@/models/UserModel.js";
 import dbConnect from "../../../lib/dbCOnnect";
 import bcrypt from 'bcryptjs';

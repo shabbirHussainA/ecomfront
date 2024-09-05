@@ -9,6 +9,8 @@ import { filterContext } from "./SearchContext";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { searching } from "@/lib/store/features/product/productSlice";
 import { useDispatch } from "react-redux";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 
 const StyledHeader = styled.header`
@@ -73,6 +75,7 @@ export default function Header() {
   const data = useAppSelector((state)=> state.product)
   const [text, settext] = useState(data.searchText);
   const dispatch = useAppDispatch()
+  const route = useRouter()
   //getting items from the cart store
  const items = useAppSelector(state=> state.cart.items)
 //  updating the properties in the store as the useState value changes 
@@ -80,12 +83,17 @@ export default function Header() {
     dispatch(searching(text));
     },[text,settext])
 
-    // const setsearcher =(text) =>{
-    //     settext(text)
-    //     if(text === ''){
-    //       dispatch(searching(''))
-    //     }
-    // }
+   
+    const logout = async () => {
+      await signOut({
+        redirect: false, // Prevent automatic redirect
+        callbackUrl: `${window.location.origin}/sign-in`, // Manually set redirect URL
+      });
+      route.push('/sign-in'); // Manually redirect after sign-out
+    };
+    
+      // Explicitly set the redirect URL
+    
   return (
     <StyledHeader>
       <Center>
@@ -98,7 +106,9 @@ export default function Header() {
             <NavLink href={'/account'}>Account</NavLink>
           
             <NavLink href={'/cart'}>Cart ({items.length})</NavLink>
+
             <input onChange={(e)=>  dispatch(searching(e.target.value))}/>
+            <button onClick={logout}>logout </button>
           </StyledNav>
           <NavButton onClick={() => setMobileNavActive(prev => !prev)}>
             <BarsIcon />

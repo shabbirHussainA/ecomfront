@@ -5,6 +5,7 @@ import UserModal from "@/models/UserModel";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import Email from "next-auth/providers/email";
+import { signOut } from "next-auth/react";
 
 export const authOptions = {
     // Adding auth options
@@ -70,6 +71,7 @@ export const authOptions = {
     // Creating pages
     pages: {
         signIn: '/sign-in',
+        signOut: '/sign-in'
     },
     // Declaring who will get the session those who have JWT
     session: {

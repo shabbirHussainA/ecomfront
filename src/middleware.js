@@ -4,7 +4,7 @@ import { getToken } from "next-auth/jwt" // getting Tokens
  //todo middleware configuration
 // This function can be marked `async` if using `await` inside
 export async function middleware(request) {
-  const token = await getToken({req:request})
+  const token = await getToken({req:request })
   const url =request.nextUrl 
 // if the user has the token than route him to the dashboard
   if(token && (

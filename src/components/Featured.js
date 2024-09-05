@@ -64,9 +64,7 @@ export default function Featured({product}) {
   // const {addProduct} = useContext(CartContext);
   const { data: session } = useSession();
   const dispatch = useAppDispatch()
-  function addFeaturedToCart() {
-    // addProduct(product._id);
-  }
+
        //posting data of the cartlist 
        const handleCart = async() =>{
         dispatch(addCart(product))
@@ -113,7 +111,7 @@ export default function Featured({product}) {
             </div>
           </Column>
           <Column>
-            <img src={ product?.images[0]||"https://dawid-next-ecommerce.s3.amazonaws.com/1679151719649.png"} alt=""/>
+            <img src={ product?.images[0]} alt=""/>
           </Column>
         </ColumnsWrapper>
       </Center>

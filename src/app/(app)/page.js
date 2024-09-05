@@ -7,19 +7,13 @@ import CartComponent from "@/components/DataFetcher";
 
 
 export default function HomePage({featuredProduct,newProducts}) {
+
 const data = useAppSelector(state=> state.product)
-  if(!data){
-    return(
-      <p>
-        loading...
-      </p>
-    )
-  }
   return (
     <div>
       <Header />
-      <Featured product={data.products[0]} />
-      <NewProducts products={data.filterProducts} />
+      <Featured product={data?.products[0]} />
+      <NewProducts products={data?.filterProducts} />
     </div>
   );
 }

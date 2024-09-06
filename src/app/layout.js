@@ -1,5 +1,6 @@
 import AuthProvider from "@/context/AuthProvider";
 import "./globals.css"
+import {createGlobalStyle} from "styled-components";
 import StoreProvider from './StoreProvider'
 import CartComponent from "@/components/DataFetcher";
 import { Header } from "@/components";
@@ -12,6 +13,7 @@ export default function RootLayout({ children }) {
   
   return (
     <html lang="en">
+
       <AuthProvider>
         <StoreProvider>
           {/* <Header/> */}

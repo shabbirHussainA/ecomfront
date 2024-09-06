@@ -1,17 +1,15 @@
 'use client'
-import Header from "@/components/Header";
 import styled from "styled-components";
 import Center from "@/components/Center";
 import Button from "@/components/Button";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-
 import axios from "axios";
 import Table from "@/components/Table";
-import Input from "@/components/Input";
 import { useSession } from "next-auth/react";
 import { addWish, removeWish } from "@/lib/store/features/wishproduct/wishSlice";
 
+// Styled components for layout and styling
 const ColumnsWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr;
@@ -70,7 +68,8 @@ const CityHolder = styled.div`
   gap: 5px;
 `;
 
-export default function wishPage() {
+// Main component for the wish page
+export default function WishPage() {
   const dispatch = useAppDispatch();
   const { data: session } = useSession();
   const [products, setProducts] = useState([]);
@@ -78,18 +77,17 @@ export default function wishPage() {
   const productState = useAppSelector((state) => state.product.products);
 
   useEffect(() => {
-    // wish Product Getter
-    function getwishProductDetails(productsArray, wishArray) {
+    // Function to get wish product details
+    function getWishProductDetails(productsArray, wishArray) {
       if (productsArray.length > 0 && wishArray.length > 0) {
         let wishProduct = [];
         wishArray.forEach(wa => {
           productsArray.forEach(pa => {
             if (wa.productId === pa._id) {
-                wishProduct.push({...pa,quantity: wa.quantity})
-                console.log(wa)
-            }
-            else{
-                console.log("not found")
+                wishProduct.push({...pa, quantity: wa.quantity});
+                console.log(wa);
+            } else {
+                console.log("not found");
             }
           });
         });
@@ -99,13 +97,15 @@ export default function wishPage() {
       }
     }
 
-    const wishDetails = getwishProductDetails(productState, wishState);
-    console.log("wish Products :",wishDetails);
+    // Fetch wish product details and set state
+    const wishDetails = getWishProductDetails(productState, wishState);
+    console.log("wish Products:", wishDetails);
     setProducts(wishDetails);
   }, [productState, wishState]);
 
+  // Function to add more of a product to the wish list
   async function moreOfThisProduct(id) {
-    dispatch(addWish({productId:id}));
+    dispatch(addWish({ productId: id }));
     if (session) {
         try { 
           const response = await axios.post('/api/addWish', {
@@ -113,7 +113,7 @@ export default function wishPage() {
             productId: id
           }, {
             headers: {
-              'Content-Type': 'appliwation/json',
+              'Content-Type': 'application/json',
             }
           });
       
@@ -129,8 +129,9 @@ export default function wishPage() {
       }
   }
 
+  // Function to remove a product from the wish list
   async function lessOfThisProduct(id) {
-    dispatch(removeWish({productId:id}));
+    dispatch(removeWish({ productId: id }));
     if (session) {
         try { 
           const response = await axios.post('/api/removeWish', {
@@ -138,7 +139,7 @@ export default function wishPage() {
             productId: id
           }, {
             headers: {
-              'Content-Type': 'appliwation/json',
+              'Content-Type': 'application/json',
             }
           });
       
@@ -154,6 +155,7 @@ export default function wishPage() {
       }
   }
   
+  // Calculate the total price of products in the wish list
   const total = products?.reduce((acc, product) => acc + (product.quantity * product.price), 0);
   
   return (
@@ -161,9 +163,9 @@ export default function wishPage() {
       <Center>
         <ColumnsWrapper>
           <Box>
-            <h2>wish</h2>
+            <h2>Wish List</h2>
             {!products?.length && (
-              <div>Your wish is empty</div>
+              <div>Your wish list is empty</div>
             )}
             {products?.length > 0 && (
               <Table>

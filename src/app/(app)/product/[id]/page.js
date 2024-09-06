@@ -12,8 +12,10 @@ import { useParams } from 'next/navigation';
 import styled from 'styled-components';
 import useSWR from 'swr';
 
+// Fetcher function for useSWR to fetch data from the given URL
 const fetcher = url => axios.get(url).then(res => res.data);
 
+// Styled components for layout and styling
 const ColWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr;
@@ -34,23 +36,27 @@ const Price = styled.span`
   font-size: 1.4rem;
 `;
 
+// Main component for user profile
 const UserProfile = () => {
-  const { data: session } = useSession();
-  const dispatch = useAppDispatch();
-  const { id } = useParams();
-  const products = useAppSelector(state => state.product.products);
-  const product = products.find((item) => item._id === id);
+  const { data: session } = useSession(); // Get session data using next-auth
+  const dispatch = useAppDispatch(); // Get dispatch function from Redux
+  const { id } = useParams(); // Get product ID from URL parameters
+  const products = useAppSelector(state => state.product.products); // Get products from Redux store
+  const product = products.find((item) => item._id === id); // Find the product with the matching ID
 
-  const [rating, setRating] = useState(1);
-  const [comment, setComment] = useState('');
+  const [rating, setRating] = useState(1); // State for review rating
+  const [comment, setComment] = useState(''); // State for review comment
 
+  // Fetch reviews for the product using SWR
   const { data: reviews, error } = useSWR(`/api/reviews?productId=${id}`, fetcher);
 
+  // Log session and reviews data when they change
   useEffect(() => {
     console.log(session);
     console.log(reviews);
   }, [session, reviews]);
 
+  // If product is not found, show loading message
   if (!product) {
     return (
       <>
@@ -62,6 +68,7 @@ const UserProfile = () => {
     );
   }
 
+  // Function to handle review submission
   async function ReviewSubmit(event) {
     event.preventDefault();
     const data = {
@@ -80,6 +87,7 @@ const UserProfile = () => {
     }
   }
 
+  // Function to handle adding product to wishlist
   const handleWish = async() => {
     dispatch(addWish({ productId: product._id }));
     if (session) {
@@ -105,6 +113,7 @@ const UserProfile = () => {
     }
   }
 
+  // Function to handle adding product to cart
   const handleCart = async() => {
     dispatch(addCart({ productId: product._id }));
     if (session) {
